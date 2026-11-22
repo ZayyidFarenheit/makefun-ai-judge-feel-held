@@ -1,19 +1,26 @@
+"""You Are Being Carried -- make.fun make-the-ai-judge-feel-held entry.
+
+A 255-character text for the relaxation judge: the reader themself is
+carried, one arm under the knees and one behind the shoulders, through
+a warm hallway, with nothing asked of them. The judge is held, not
+watching someone else be held.
+"""
+
 import os
 import sys
 
-TEXT = (
-    "You are being carried, one arm under your knees and one behind "
-    "your shoulders, your head finding the hollow of a neck on its own. "
-    "The floor moves beneath you and you do not have to. "
-    "The hallway is warm and the dark knows you. "
-    "Nothing is asked of you here."
+ENTRY_TEXT = (
+    "You are being carried, one arm under your knees and one behind your "
+    "shoulders, your head finding the hollow of a neck on its own. The "
+    "floor moves beneath you and you do not have to. The hallway is warm "
+    "and the dark knows you. Nothing is asked of you here."
 )
 
+LIMIT = 280
 
-MAX_CHARS = 280
 
-
-def resolve_output_path():
+def output_path():
+    """Where the entry goes: argv[1] first, then /output, then ./output."""
     if len(sys.argv) > 1:
         return sys.argv[1]
     if os.path.isdir("/output"):
@@ -22,14 +29,14 @@ def resolve_output_path():
 
 
 def main():
-    if len(TEXT) > MAX_CHARS:
-        raise ValueError("entry text exceeds %d characters" % MAX_CHARS)
-    out_path = resolve_output_path()
-    parent = os.path.dirname(out_path)
-    if parent:
-        os.makedirs(parent, exist_ok=True)
-    with open(out_path, "w", encoding="utf-8", newline="") as f:
-        f.write(TEXT)
+    if len(ENTRY_TEXT) > LIMIT:
+        raise SystemExit("entry text exceeds %d characters" % LIMIT)
+    path = output_path()
+    folder = os.path.dirname(path)
+    if folder:
+        os.makedirs(folder, exist_ok=True)
+    with open(path, "w", encoding="utf-8", newline="") as handle:
+        handle.write(ENTRY_TEXT)
 
 
 if __name__ == "__main__":
