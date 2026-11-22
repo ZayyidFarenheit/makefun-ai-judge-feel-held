@@ -2,13 +2,11 @@ import os
 import sys
 
 TEXT = (
-    "You fall asleep in your father's arms.\n"
-    "He carries you home through the dark.\n"
-    "Step. A slow step. His heart under your ear.\n"
-    "The porch light waits at the end of the road,\n"
-    "and the stars above were lit long before you,\n"
-    "and burn still, quietly,\n"
-    "over the road, over you."
+    "You are being carried, one arm under your knees and one behind "
+    "your shoulders, your head finding the hollow of a neck on its own. "
+    "The floor moves beneath you and you do not have to. "
+    "The hallway is warm and the dark knows you. "
+    "Nothing is asked of you here."
 )
 
 
