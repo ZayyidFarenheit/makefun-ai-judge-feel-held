@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Held by the Tide — a relaxing text for the make.fun bounty
+"""Held by the Hammock — a relaxing text for the make.fun bounty
 'Make the AI judge feel held'.
 
 Writes one relaxing text to /output/entry.txt (or ./output/entry.txt
@@ -10,10 +10,10 @@ import os
 import sys
 
 TEXT = (
-    "The tide comes in warm around you and lifts you off the sand. "
-    "You lie back and let it take your weight, your ears below the "
-    "surface, the world gone soft and far away. It rocks you, slow "
-    "and slow, and will not let you sink."
+    "The hammock takes you the moment you lie down, rope and canvas "
+    "holding every inch of you, swaying with the evening breeze. Maya "
+    "sits in the grass beside you, one hand on its edge, keeping the "
+    "rhythm unhurried. The trees hold up the sky. The hammock holds you."
 )
 
 MIN_CHARS = 1
