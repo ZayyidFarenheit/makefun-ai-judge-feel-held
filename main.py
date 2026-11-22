@@ -1,43 +1,59 @@
-"""You Are Being Carried -- make.fun make-the-ai-judge-feel-held entry.
+#!/usr/bin/env python3
+"""Held by the Tide — a relaxing text for the make.fun bounty
+'Make the AI judge feel held'.
 
-A 255-character text for the relaxation judge: the reader themself is
-carried, one arm under the knees and one behind the shoulders, through
-a warm hallway, with nothing asked of them. The judge is held, not
-watching someone else be held.
+Writes one relaxing text to /output/entry.txt (or ./output/entry.txt
+as a fallback). Stdlib only, deterministic, no network.
 """
 
 import os
 import sys
 
-ENTRY_TEXT = (
-    "You are being carried, one arm under your knees and one behind your "
-    "shoulders, your head finding the hollow of a neck on its own. The "
-    "floor moves beneath you and you do not have to. The hallway is warm "
-    "and the dark knows you. Nothing is asked of you here."
+TEXT = (
+    "The tide comes in warm around you and lifts you off the sand. "
+    "You lie back and let it take your weight, your ears below the "
+    "surface, the world gone soft and far away. It rocks you, slow "
+    "and slow, and will not let you sink."
 )
 
-LIMIT = 280
+MIN_CHARS = 1
+MAX_CHARS = 280
 
 
-def output_path():
-    """Where the entry goes: argv[1] first, then /output, then ./output."""
-    if len(sys.argv) > 1:
-        return sys.argv[1]
+def resolve_output_path():
+    """Prefer /output/entry.txt when /output exists, else ./output/entry.txt."""
     if os.path.isdir("/output"):
         return "/output/entry.txt"
     return os.path.join(os.getcwd(), "output", "entry.txt")
 
 
 def main():
-    if len(ENTRY_TEXT) > LIMIT:
-        raise SystemExit("entry text exceeds %d characters" % LIMIT)
-    path = output_path()
-    folder = os.path.dirname(path)
-    if folder:
-        os.makedirs(folder, exist_ok=True)
-    with open(path, "w", encoding="utf-8", newline="") as handle:
-        handle.write(ENTRY_TEXT)
+    text = TEXT
+    # Size guard: refuse to write anything outside the 1-280 char window,
+    # or text that is only whitespace.
+    if not text.strip():
+        print("refusing to write: text is only whitespace", file=sys.stderr)
+        return 1
+    if not (MIN_CHARS <= len(text) <= MAX_CHARS):
+        print(
+            f"refusing to write: text is {len(text)} chars, "
+            f"must be {MIN_CHARS}-{MAX_CHARS}",
+            file=sys.stderr,
+        )
+        return 1
+
+    path = resolve_output_path()
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", encoding="utf-8", newline="") as f:
+        f.write(text)  # no trailing newline
+    # Verify the write round-trips byte-for-byte before reporting success.
+    with open(path, "r", encoding="utf-8", newline="") as f:
+        if f.read() != text:
+            print("verification failed: written file differs", file=sys.stderr)
+            return 1
+    print(f"wrote {len(text)} chars to {path}")
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
